@@ -1,10 +1,26 @@
 import React from "react";
-import Header from "./Components/Header";
+import Archive from "./Routes/Archive";
+import Newsbox from "./Routes/Newsbox";
+import Settings from "./Routes/Settings";
+import {
+  BrowserRouter as Switch,
+  Route
+} from "react-router-dom";
 
 function App() {
   return (
     <div className="app">
-      <Header leftIcon="bookmark-1" rightIcon="settings" title="Newsbox"/>
+      <Switch>
+        <Route exact path="/settings">
+          <Settings/>
+        </Route>
+        <Route exact path="/archive">
+          <Archive/>
+        </Route>
+        <Route exact path="/">
+          <Newsbox/>
+        </Route>
+      </Switch>
     </div>
   );
 }
