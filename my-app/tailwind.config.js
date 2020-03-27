@@ -2,7 +2,7 @@ module.exports = {
   theme: {
     colors: {
       primary: "var(--color-primary)",
-      background: {
+      bg: {
         primary: "var(--color-bg-primary)",
         secondary: "var(--color-bg-secondary)"
       },
