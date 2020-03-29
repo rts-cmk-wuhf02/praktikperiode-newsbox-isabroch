@@ -2,3 +2,39 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 @import "./variables.css";
+
+.bordered-item {
+  @apply border-solid;
+  @apply border-b-2;
+  @apply border-bg-secondary;
+}
+
+.category__dropdown {
+  position: relative;
+list-style: none;
+cursor: pointer;
+}
+
+.category__dropdown::-webkit-details-marker {
+  display: none;
+}
+
+.category__dropdown::after {
+  content: '\ebc6';
+  font-family:'honeybee';
+  position: absolute;
+  right: 1em;
+  transform: rotate(0);
+  transition: transform 0.2s ease;
+}
+
+.category[open] .category__dropdown::after {
+  transform: rotate(90deg);
+}
+
+.truncate-2line {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
