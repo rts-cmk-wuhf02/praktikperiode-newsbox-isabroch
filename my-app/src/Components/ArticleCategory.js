@@ -7,8 +7,12 @@ export default class Category extends Component {
     super(props);
     this.dropdownController = React.createRef();
     this.dropdownContent = React.createRef();
+    this.state = {
+      categoryIsOpen: true
+    };
   }
 
+  /* Loops through a container's direct children and adds their heights together. */
   getInnerHeight = container => {
     const children = container.childNodes;
 
@@ -26,34 +30,41 @@ export default class Category extends Component {
     dropdownContentContainer,
     startsOpened
   ) => {
+    /* On page load, don't want animation. So if starting opened, have animation speed of 0s to prevent jank. */
     const transitionTime = startsOpened ? 0 : 400;
 
-    const isOpen = !startsOpened && dropdownController.open;
+    /* If startsOpened is true, it should trigger closed -> open. Otherwise, check the open attribute on the dropdownController. */
+    const isOpen = startsOpened ? false : dropdownController.open;
 
     if (isOpen) {
       // On toggling open -> closed: Animate then close dropdown.
       this.animateHeight(dropdownContentContainer, false, transitionTime);
       dropdownController.classList.remove("category--is-open");
       setTimeout(() => {
+        console.log('set open property to false')
         dropdownController.open = false;
       }, transitionTime);
     } else {
       // On toggling closed -> open: Open dropdown then animate.
-      dropdownController.classList.add("category--is-open");
+      console.log('set open property to true')
       dropdownController.open = true;
+      dropdownController.classList.add("category--is-open");
       this.animateHeight(dropdownContentContainer, true, transitionTime);
     }
   };
 
+  /* Sets CSS variables, which will trigger transitions */
   animateHeight = (container, isOpen, transitionTime) => {
     const height = isOpen ? this.getInnerHeight(container) : 0;
-    console.log(height);
     container.style = `--childHeight: ${height}px; --transitionTime: ${transitionTime}ms`;
   };
 
-  handleClick(e, containerClass) {
+  handleClick(e) {
     e.preventDefault();
     e.persist();
+
+    console.log(e);
+
     const isTriggeringDropdown = e.target.classList.contains(
       "category__dropdown"
     );
@@ -62,12 +73,10 @@ export default class Category extends Component {
       return;
     }
 
-    const dropdownController = e.currentTarget;
-    const dropdownContentContainer = e.currentTarget.querySelector(
-      containerClass
+    this.triggerDropdown(
+      this.dropdownController.current,
+      this.dropdownContent.current
     );
-
-    this.triggerDropdown(dropdownController, dropdownContentContainer);
   }
 
   componentDidMount() {
@@ -80,16 +89,15 @@ export default class Category extends Component {
 
   render() {
     const articles = ["1", "2", "3"];
-    const isOpen = true;
 
     return (
-      <details
-        className={"category " + isOpen && "category--is-open"}
-        open={isOpen}
-        ref={this.dropdownController}
-        onClick={e => this.handleClick(e, ".category__content-container")}
-      >
-        <summary className="category__dropdown flex items-center px-4 py-3 text-text-primary bordered-item-t">
+      <details ref={this.dropdownController}>
+        <summary
+          className="category__dropdown flex items-center px-4 py-3 text-text-primary bordered-item-t"
+          touch-action="none"
+          onClick={e => e.preventDefault()}
+          onPointerDown={e => this.handleClick(e)}
+        >
           <img
             src={categoryItem}
             width={35}

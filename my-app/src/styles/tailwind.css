@@ -3,6 +3,10 @@
 @import "tailwindcss/utilities";
 @import "./variables.css";
 
+body {
+  overflow-y: scroll;
+}
+
 .bordered-item-b {
   @apply border-solid;
   @apply border-b-2;
