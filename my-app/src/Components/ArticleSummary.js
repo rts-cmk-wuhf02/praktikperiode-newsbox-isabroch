@@ -39,8 +39,8 @@ class ActionButton extends Component {
 export default class ArticleSummary extends Component {
   render() {
     return (
-      <article className="relative bordered-item">
-        <div className="grid grid-cols-auto-1 px-4 pb-4 pt-3 relative z-10 bg-bg-primary w-full">
+      <article className="relative">
+        <div className="grid grid-cols-auto-1 px-4 py-4 relative z-10 bg-bg-primary w-full">
           <div className="pl-5 pr-10 overflow-hidden">
             <h3 className="text-text-primary font-bold truncate">
               {this.props.article}

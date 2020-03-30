@@ -6,9 +6,9 @@ export default class Category extends Component {
     const categories = ["1", "2", "3"];
 
     return (
-        <ul>
+        <ul className="bordered-item-b">
           {categories.map(category => (
-            <li>
+            <li key={category}>
               <ArticleCategory category={category}/>
             </li>
           ))}
