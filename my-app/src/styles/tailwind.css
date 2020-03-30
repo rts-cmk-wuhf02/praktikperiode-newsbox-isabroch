@@ -2,3 +2,55 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 @import "./variables.css";
+
+body {
+  overflow-y: scroll;
+}
+
+.bordered-item-b {
+  @apply border-solid;
+  @apply border-b-2;
+  @apply border-bg-secondary;
+}
+
+.bordered-item-t {
+  @apply border-solid;
+  @apply border-t-2;
+  @apply border-bg-secondary;
+}
+
+.category__dropdown {
+  position: relative;
+  list-style: none;
+  cursor: pointer;
+}
+
+.category__dropdown::-webkit-details-marker {
+  display: none;
+}
+
+.category__dropdown::after {
+  content: "\ebc6";
+  font-family: "honeybee";
+  position: absolute;
+  right: 1em;
+  transform: rotate(0);
+  transition: transform var(--transitionTime, 400ms) ease;
+}
+
+.category--is-open .category__dropdown::after {
+  transform: rotate(90deg);
+}
+
+.category__content-container {
+  overflow: hidden;
+  height: var(--childHeight, 0);
+  transition: height var(--transitionTime, 400ms) ease;
+}
+
+.truncate-2line {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}

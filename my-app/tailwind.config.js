@@ -21,7 +21,8 @@ module.exports = {
         }
       },
       gridTemplateColumns: {
-        'header': '30px 1fr 30px'
+        'header': '30px 1fr 30px',
+        'auto-1': 'auto 1fr'
       }
     }
   }
