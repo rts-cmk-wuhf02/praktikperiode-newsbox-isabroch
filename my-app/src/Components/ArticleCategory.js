@@ -84,8 +84,6 @@ export default class Category extends Component {
   }
 
   render() {
-    const articles = ["1", "2", "3"];
-
     return (
       <details ref={this.dropdownController}>
         <summary
@@ -101,11 +99,11 @@ export default class Category extends Component {
             alt=""
             className="inline p-2 shadow-xl rounded-full"
           />
-          <h2 className="inline pl-2 font-bold uppercase">Sport</h2>
+          <h2 className="inline pl-2 font-bold uppercase">{this.props.category}</h2>
         </summary>
         <ul className="category__content-container" ref={this.dropdownContent}>
-          {articles.map(article => (
-            <li className="category__content bordered-item-t" key={article}>
+          {this.props.articles.map(article => (
+            <li className="category__content bordered-item-t" key={article.name}>
               <ArticleSummary article={article} />
             </li>
           ))}

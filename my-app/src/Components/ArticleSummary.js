@@ -43,10 +43,10 @@ export default class ArticleSummary extends Component {
         <div className="grid grid-cols-auto-1 px-4 py-4 relative z-10 bg-bg-primary w-full">
           <div className="pl-5 pr-10 overflow-hidden">
             <h3 className="text-text-primary font-bold truncate">
-              {this.props.article}
+              {this.props.article.title}
             </h3>
             <p className="text-sm text-text-secondary truncate-2line leading-snug">
-              {this.props.article}
+              {this.props.article.description}
             </p>
           </div>
           <img
