@@ -41,12 +41,10 @@ export default class Category extends Component {
       this.animateHeight(dropdownContentContainer, false, transitionTime);
       dropdownController.classList.remove("category--is-open");
       setTimeout(() => {
-        console.log('set open property to false')
         dropdownController.open = false;
       }, transitionTime);
     } else {
       // On toggling closed -> open: Open dropdown then animate.
-      console.log('set open property to true')
       dropdownController.open = true;
       dropdownController.classList.add("category--is-open");
       this.animateHeight(dropdownContentContainer, true, transitionTime);
@@ -62,8 +60,6 @@ export default class Category extends Component {
   handleClick(e) {
     e.preventDefault();
     e.persist();
-
-    console.log(e);
 
     const isTriggeringDropdown = e.target.classList.contains(
       "category__dropdown"
