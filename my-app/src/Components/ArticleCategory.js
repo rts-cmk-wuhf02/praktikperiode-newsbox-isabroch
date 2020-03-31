@@ -60,7 +60,6 @@ export default class Category extends Component {
   handleClick(e) {
     e.preventDefault();
     e.persist();
-
     const isTriggeringDropdown = e.target.classList.contains(
       "category__dropdown"
     );
@@ -99,6 +98,7 @@ export default class Category extends Component {
             alt=""
             className="inline p-2 shadow-xl rounded-full"
           />
+
           <h2 className="inline pl-2 font-bold uppercase">{this.props.category}</h2>
         </summary>
         <ul className="category__content-container" ref={this.dropdownContent}>
