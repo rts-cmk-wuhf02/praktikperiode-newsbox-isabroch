@@ -41,12 +41,10 @@ export default class Category extends Component {
       this.animateHeight(dropdownContentContainer, false, transitionTime);
       dropdownController.classList.remove("category--is-open");
       setTimeout(() => {
-        console.log('set open property to false')
         dropdownController.open = false;
       }, transitionTime);
     } else {
       // On toggling closed -> open: Open dropdown then animate.
-      console.log('set open property to true')
       dropdownController.open = true;
       dropdownController.classList.add("category--is-open");
       this.animateHeight(dropdownContentContainer, true, transitionTime);
@@ -62,9 +60,6 @@ export default class Category extends Component {
   handleClick(e) {
     e.preventDefault();
     e.persist();
-
-    console.log(e);
-
     const isTriggeringDropdown = e.target.classList.contains(
       "category__dropdown"
     );
@@ -88,8 +83,6 @@ export default class Category extends Component {
   }
 
   render() {
-    const articles = ["1", "2", "3"];
-
     return (
       <details ref={this.dropdownController}>
         <summary
@@ -105,11 +98,12 @@ export default class Category extends Component {
             alt=""
             className="inline p-2 shadow-xl rounded-full"
           />
-          <h2 className="inline pl-2 font-bold uppercase">Sport</h2>
+
+          <h2 className="inline pl-2 font-bold uppercase">{this.props.category}</h2>
         </summary>
         <ul className="category__content-container" ref={this.dropdownContent}>
-          {articles.map(article => (
-            <li className="category__content bordered-item-t" key={article}>
+          {this.props.articles.map(article => (
+            <li className="category__content bordered-item-t" key={article.name}>
               <ArticleSummary article={article} />
             </li>
           ))}
