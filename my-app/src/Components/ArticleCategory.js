@@ -103,7 +103,7 @@ export default class Category extends Component {
         </summary>
         <ul className="category__content-container" ref={this.dropdownContent}>
           {this.props.articles.map(article => (
-            <li className="category__content bordered-item-t" key={article.name}>
+            <li className="category__content bordered-item-t">
               <ArticleSummary article={article} />
             </li>
           ))}

@@ -10,7 +10,20 @@ function xmldomToJson(xml) {
 
   /* Stop recursion when there are no children */
   if (children.length === 0) {
-    return xml.innerHTML;
+    const attributes = {};
+
+    /* Get attributes if there are any */
+    if (xml.attributes.length > 0) {
+      for(let i = 0; i < xml.attributes.length; i++) {
+        const attribute = xml.attributes.item(i);
+        attributes[attribute.nodeName] = attribute.nodeValue;
+      }
+    }
+
+    return {
+      content:  xml.innerHTML,
+      ...attributes
+    };
   }
 
   /* Initializing empty object to store JSON in */
