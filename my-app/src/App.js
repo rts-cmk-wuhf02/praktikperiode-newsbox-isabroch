@@ -59,7 +59,7 @@ export default class App extends Component {
             <Archive />
           </Route>
           <Route exact path="/">
-            { this.state.feed.length > 1 ? <Newsbox feed={this.state.feed}/> : 'Am still loading!'}
+            <Newsbox feed={this.state.feed}/>
           </Route>
         </Switch>
       </div>

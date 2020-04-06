@@ -9,7 +9,7 @@ export default class Newsbox extends Component {
       <div>
         <Header leftIcon="bookmark-1" leftRoute="/archive" rightIcon="settings" rightRoute="/settings" title="Newsbox"/>
         <Search/>
-        <ArticleList {...this.props}/>
+        {this.props.feed.length > 1 ? <ArticleList {...this.props}/> : "Getting articles!"}
       </div>
     )
   }
