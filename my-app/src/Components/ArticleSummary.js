@@ -96,8 +96,6 @@ export default class ArticleSummary extends Component {
     clearTimeout(this.clickTimer);
     e.persist();
 
-    console.log(this.state.totalMoved);
-
     if (this.state.isSwiping && this.state.totalMoved > 5) {
       /* If drag ends at less than 25% of notification width, swipe all the way to left. Else, reset to 0. */
       const elWidth = this.el.current.offsetWidth;

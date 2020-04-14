@@ -3,13 +3,11 @@ import ArticleCategory from "../Components/ArticleCategory";
 
 export default class Category extends Component {
   render() {
-    const categories = this.props.feed;
-
     return (
         <ul className="bordered-item-b">
-          {categories.map(({category, articles}) => (
+          {this.props.feed.map(({category, articles, isToggled}) => (
             <li key={category}>
-              <ArticleCategory category={category} articles={articles}/>
+              <ArticleCategory category={category} articles={articles} isToggled={isToggled}/>
             </li>
           ))}
         </ul>

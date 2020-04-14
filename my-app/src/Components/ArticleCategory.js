@@ -7,9 +7,6 @@ export default class Category extends Component {
     super(props);
     this.dropdownController = React.createRef();
     this.dropdownContent = React.createRef();
-    this.state = {
-      categoryIsOpen: true
-    };
   }
 
   /* Loops through a container's direct children and adds their heights together. */
@@ -34,9 +31,9 @@ export default class Category extends Component {
     const transitionTime = startsOpened ? 0 : 400;
 
     /* If startsOpened is true, it should trigger closed -> open. Otherwise, check the open attribute on the dropdownController. */
-    const isOpen = startsOpened ? false : dropdownController.open;
+    const wasOpen = startsOpened ? false : dropdownController.open;
 
-    if (isOpen) {
+    if (wasOpen) {
       // On toggling open -> closed: Animate then close dropdown.
       this.animateHeight(dropdownContentContainer, false, transitionTime);
       dropdownController.classList.remove("category--is-open");
@@ -49,7 +46,17 @@ export default class Category extends Component {
       dropdownController.classList.add("category--is-open");
       this.animateHeight(dropdownContentContainer, true, transitionTime);
     }
+
+    // Note new toggle status in localStorage
+    this.manageToggleInLocalStorage(dropdownController.open)
   };
+
+  manageToggleInLocalStorage = (toggleStatus) => {
+    const categories = JSON.parse(localStorage.getItem('categories'));
+    const index = categories.findIndex( category => category.name === this.props.category);
+    categories[index].isToggled = toggleStatus;
+    localStorage.setItem('categories', JSON.stringify(categories));
+  }
 
   /* Sets CSS variables, which will trigger transitions */
   animateHeight = (container, isOpen, transitionTime) => {
@@ -75,11 +82,14 @@ export default class Category extends Component {
   }
 
   componentDidMount() {
-    this.triggerDropdown(
-      this.dropdownController.current,
-      this.dropdownContent.current,
-      true
-    );
+    // Match toggle status of last time app was used
+    if(this.props.isToggled) {
+      this.triggerDropdown(
+        this.dropdownController.current,
+        this.dropdownContent.current,
+        true
+      );
+    }
   }
 
   render() {
