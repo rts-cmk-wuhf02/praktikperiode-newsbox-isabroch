@@ -54,3 +54,21 @@ body {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
+
+.article__link::before {
+  /* Uncomment to enable link over entire card, comment for only over text */
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.is-swiping {
+  transition: left 0s;
+}
+
+.is-not-swiping {
+  transition: left 0.5s;
+}
