@@ -39,18 +39,22 @@ class ArticleImage extends Component {
   getImage() {
     const defaultImage = "http://placekitten.com/150";
     let image = defaultImage;
+    let alt = "";
     if (this.props.article.hasOwnProperty("media:content")) {
       image = this.props.article["media:content"].url;
     }
+    if (this.props.article.hasOwnProperty("media:description")) {
+      alt = this.props.article["media:description"].content;
+    }
 
-    return image;
+    return {image: image, alt: alt};
   }
 
   render() {
     return (
       <img
-        src={this.getImage()}
-        alt=""
+        src={this.getImage().image}
+        alt={this.getImage().alt}
         width={70}
         height={70}
         className="rounded-full h-16 w-16 order-first"
@@ -123,7 +127,9 @@ export default class ArticleSummary extends Component {
         onPointerUp={this.handleEndPan}
         onPointerLeave={this.handleEndPan}
         onPointerDown={this.handleStartPan}
-        onClick={(e) => e.preventDefault()} /* Prevent mouse clicks when dragging */
+        onClick={(e) => {
+          console.log(this.props.article);
+          e.preventDefault()}} /* Prevent mouse clicks when dragging */
         ref={this.el}
       >
         <div className={`grid grid-cols-auto-1 px-4 py-4 relative z-10 bg-bg-primary w-full ${this.state.isSwiping ? "is-swiping" : "is-not-swiping"}`} style={ {left: this.state.currentX} }>
