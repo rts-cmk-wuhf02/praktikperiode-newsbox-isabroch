@@ -106,7 +106,7 @@ constructor(props) {
 
   render() {
     return (
-      <div className="page bg-bg-primary">
+      <div className="page">
         <Header leftIcon="chevron-left" leftRoute="/" rightIcon="settings" rightRoute="/settings" title="Archive"/>
         <div><Search/>
         <CSSTransitionGroup

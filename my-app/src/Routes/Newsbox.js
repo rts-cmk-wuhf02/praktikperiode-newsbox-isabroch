@@ -13,6 +13,7 @@ export default class Newsbox extends Component {
       isLoading: true, // show loading animation if isLoading true
       feed: [],
       notificationShowing: false,
+      message: "Getting articles!"
     };
   }
 
@@ -40,7 +41,15 @@ export default class Newsbox extends Component {
       }
     }
 
-    this.setState({ isLoading: false });
+    // Check if all categories are disabled, which would mean no articles can be loaded
+    const allCategoriesDisabled = this.props.categories.every(category => !category.enabled);
+    if (allCategoriesDisabled) {
+      this.setState({message: "All categories have been disabled in settings! Turn at least one on to load articles here."})
+    }
+
+    if (feeds.length > 0) {
+      this.setState({ isLoading: false });
+    }
 
     return feeds;
   };
@@ -103,7 +112,7 @@ export default class Newsbox extends Component {
 
   render() {
     return (
-      <div className="page bg-bg-primary">
+      <div className="page">
         <Header
           leftIcon="bookmark-1"
           leftRoute="/archive"
@@ -113,8 +122,9 @@ export default class Newsbox extends Component {
         />
         <div>
         <Search />
+
         {this.state.isLoading ? (
-          <span className="fillerMessage">Getting articles!</span>
+          <span className="fillerMessage">{this.state.message}</span>
         ) : (
           <ArticleList
             feed={this.state.feed}

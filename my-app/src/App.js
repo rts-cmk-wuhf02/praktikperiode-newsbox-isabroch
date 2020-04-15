@@ -66,13 +66,12 @@ export default class App extends Component {
   }
 
   changeColorMode = () => {
-    console.log(this.state.isLightMode);
     this.setState({isLightMode: !this.state.isLightMode});
   }
 
   render() {
     return (
-      <div className={`app app--${this.state.isLightMode ? 'light' : 'dark'}`}>
+      <div className={`bg-bg-primary app app--${this.state.isLightMode ? 'light' : 'dark'}`}>
         <Switch>
           <Route exact path="/settings">
 
