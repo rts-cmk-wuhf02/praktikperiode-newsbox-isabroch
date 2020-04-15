@@ -6,17 +6,11 @@ export default class Category extends Component {
   render() {
     return (
         <ul className="bordered-item-b">
-<CSSTransitionGroup
-        transitionName="article"
-        transitionEnterTimeout={500}
-        transitionLeaveTimeout={500}
-        >
           {this.props.feed.map(({category, articles, isToggled}) => (
             <li key={category}>
               <ArticleCategory category={category} articles={articles} isToggled={isToggled} swipeAction={this.props.swipeAction} categoryStorage={this.props.categoryStorage}/>
             </li>
           ))}
-</CSSTransitionGroup>
         </ul>
     );
   }
