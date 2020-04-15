@@ -106,9 +106,9 @@ constructor(props) {
 
   render() {
     return (
-      <div>
+      <div className="page">
         <Header leftIcon="chevron-left" leftRoute="/" rightIcon="settings" rightRoute="/settings" title="Archive"/>
-        <Search/>
+        <div><Search/>
         <CSSTransitionGroup
         transitionName="article"
         transitionEnterTimeout={500}
@@ -137,7 +137,7 @@ constructor(props) {
               Removed <strong>{this.state.notificationShowing}</strong> from Archive!
             </Notification>
           )}
-        </CSSTransitionGroup>
+        </CSSTransitionGroup></div>
       </div>
     )
   }

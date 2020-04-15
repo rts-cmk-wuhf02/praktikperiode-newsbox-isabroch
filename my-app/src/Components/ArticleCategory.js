@@ -106,7 +106,7 @@ export default class Category extends Component {
             width={35}
             height={35}
             alt=""
-            className="inline p-2 shadow-xl rounded-full"
+            className="inline p-2 shadow-black rounded-full"
           />
 
           <h2 className="inline pl-2 font-bold uppercase">

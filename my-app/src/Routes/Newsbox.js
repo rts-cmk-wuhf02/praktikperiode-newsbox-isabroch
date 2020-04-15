@@ -103,7 +103,7 @@ export default class Newsbox extends Component {
 
   render() {
     return (
-      <div>
+      <div className="page">
         <Header
           leftIcon="bookmark-1"
           leftRoute="/archive"
@@ -111,6 +111,7 @@ export default class Newsbox extends Component {
           rightRoute="/settings"
           title="Newsbox"
         />
+        <div>
         <Search />
         {this.state.isLoading ? (
           <span className="fillerMessage">Getting articles!</span>
@@ -136,6 +137,7 @@ export default class Newsbox extends Component {
             </Notification>
           )}
         </CSSTransitionGroup>
+        </div>
       </div>
     );
   }

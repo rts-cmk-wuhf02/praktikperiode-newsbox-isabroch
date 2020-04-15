@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export default class Header extends Component {
   render() {
     return (
-      <header className="grid p-6 grid-cols-header text-center items-center text-lg text-text-primary bordered-item-b bg-bg-primary">
+      <header className="grid p-6 grid-cols-header text-center items-center text-lg text-text-primary bordered-item-b bg-bg-primary sticky z-40 top-0">
         {this.props.leftIcon ? (
           <Link to={this.props.leftRoute} className={`th ${`th-${this.props.leftIcon}`}`.trim()}>
           </Link>

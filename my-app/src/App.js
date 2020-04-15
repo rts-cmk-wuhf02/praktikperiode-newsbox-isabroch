@@ -4,6 +4,25 @@ import Newsbox from "./Routes/Newsbox";
 import Settings from "./Routes/Settings";
 import { BrowserRouter as Switch, Route } from "react-router-dom";
 
+function getDefaultColorMode() {
+  // check if colormode settings exist in storage
+  // else check if user has color preference for dark mode
+  // else default to light mode
+
+  let colorMode = "light";
+
+  const storedColorMode = localStorage.getItem("colorMode");
+  if (storedColorMode) {
+    colorMode = storedColorMode;
+  } else if (window.matchMedia("prefers-color-scheme: dark")) {
+    colorMode = "dark";
+  }
+
+  // create colorMode item!
+  localStorage.setItem("colorMode", colorMode)
+
+  return colorMode;
+}
 
 export default class App extends Component {
   constructor(props) {
@@ -11,6 +30,7 @@ export default class App extends Component {
 
     this.state = {
       categories: this.getCategoryStart(),
+      isLightMode: getDefaultColorMode() === 'light'
     };
   }
 
@@ -33,7 +53,7 @@ export default class App extends Component {
     return categories;
   };
 
-  handleToggle = (toggledCategory) => {
+  handleCategoryToggle = (toggledCategory) => {
     const newCategoryState = this.getCategoryStart();
 
     const index =    newCategoryState.findIndex( category => category.name === toggledCategory.name );
@@ -45,18 +65,27 @@ export default class App extends Component {
     this.setState({categories: newCategoryState});
   }
 
+  changeColorMode = () => {
+    console.log(this.state.isLightMode);
+    this.setState({isLightMode: !this.state.isLightMode});
+  }
+
   render() {
     return (
-      <div className="app">
+      <div className={`app app--${this.state.isLightMode ? 'light' : 'dark'}`}>
         <Switch>
           <Route exact path="/settings">
-            <Settings categories={this.state.categories} handleToggle={this.handleToggle}/>
+
+            <Settings categories={this.state.categories} handleToggle={this.handleCategoryToggle} handleColorMode={this.changeColorMode}/>
+
           </Route>
           <Route exact path="/archive">
+
             <Archive />
+
           </Route>
           <Route exact path="/">
-            <Newsbox categories={this.state.categories}/>
+           <Newsbox categories={this.state.categories}/>
           </Route>
         </Switch>
       </div>

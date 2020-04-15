@@ -9,13 +9,13 @@ class ToggleList extends Component {
 
     if (items && items.length > 0) {
       const toggles = items.map((item) => (
-        <li className="bordered-item-between p-4" key={item.name}>
-          <Toggle toggleTitle={item.name} isToggled={item.enabled} handleToggle={this.props.handleToggle}/>
+        <li className="bordered-item-between uppercase font-bold text-text-primary" key={item.name}>
+          <Toggle toggleTitle={item.name} isToggled={item.enabled} handleToggle={this.props.handleToggle} componentClass="p-5"/>
         </li>
       ));
 
       return (
-        <ul className="my-10 mx-5 rounded overflow-hidden bg-bg-primary">
+        <ul className={`rounded-lg overflow-hidden bg-bg-primary shadow-black max-w-lg w-full ${this.props.componentClass}`}>
           {toggles}
         </ul>
       );
@@ -29,7 +29,7 @@ export default class Settings extends Component {
     render() {
 
     return (
-      <div className="bg-bg-secondary">
+      <div className="bg-bg-secondary page">
         <Header
           leftIcon="chevron-left"
           leftRoute="/"
@@ -38,16 +38,17 @@ export default class Settings extends Component {
           title="News Settings"
         />
 
-        {/* Title */}
-        <h2>
-          <span className="">Manage</span>
-          <span className="">Categories</span>
-        </h2>
+        <div className="flex flex-col items-center mx-4">
+          <h2 className="mt-10 text-center leading-tight title-divider">
+            <span className="text-primary font-bold text-3xl">Manage</span><br />
+            <span className="text-text-secondary text-xl">Categories</span>
+          </h2>
 
-        <ToggleList items={this.props.categories} handleToggle={this.props.handleToggle} />
+          <ToggleList items={this.props.categories} handleToggle={this.props.handleToggle} componentClass="mt-16 mb-20" />
 
-        <button>Toggle dark mode</button>
-        <VersionNumber />
+          <button className="inline-block uppercase font-label text-text-primary border-solid border-bg-tertiary border px-4 py-3 tracking-wider rounded-full focus:outline-none focus:shadow-outline" onClick={this.props.handleColorMode}>Toggle dark mode</button>
+          <VersionNumber componentClass="block text-center text-text-secondary text-xs mt-auto mb-10"/>
+        </div>
       </div>
     );
   }

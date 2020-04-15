@@ -7,9 +7,9 @@ export default class Toggle extends Component {
 
   render() {
     return (
-      <label className="toggle">
+      <label className={`toggle cursor-pointer ${this.props.componentClass}`}>
         <input type="checkbox" className="toggle__checkbox" checked={this.props.isToggled} onChange={this.handleChange}/>
-        <h3 className="toggle__title text-text-primary">{this.props.toggleTitle}</h3>
+        <h3 className="toggle__title">{this.props.toggleTitle}</h3>
         <div className="toggle__slider">Toggle</div>
       </label>
     );
