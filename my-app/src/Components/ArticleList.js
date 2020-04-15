@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import ArticleCategory from "../Components/ArticleCategory";
-import { CSSTransitionGroup } from "react-transition-group";
 
 export default class Category extends Component {
   render() {
