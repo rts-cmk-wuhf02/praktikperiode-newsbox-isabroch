@@ -133,10 +133,11 @@ export default class Newsbox extends Component {
         />
         <Search />
         {this.state.isLoading ? (
-          "Getting articles!"
+          <span className="fillerMessage">Getting articles!</span>
         ) : (
           <ArticleList
             feed={this.state.feed}
+            categoryStorage={"newsboxCategories"}
             swipeAction={{
               name: "Archive",
               action: this.saveArticleToArchive,

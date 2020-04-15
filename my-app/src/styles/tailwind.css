@@ -95,10 +95,14 @@ body {
 }
 
 .article-leave {
-  /* overflow: hidden; */
+  overflow: hidden;
   max-height: var(--childHeight);
 }
 .article-leave.article-leave-active {
   max-height: 0;
-  transition: max-height 1000ms ease-in;
+  transition: max-height 500ms ease-in;
+}
+
+.fillerMessage {
+  @apply pl-10
 }

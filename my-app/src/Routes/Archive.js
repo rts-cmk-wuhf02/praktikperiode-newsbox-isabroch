@@ -23,9 +23,28 @@ constructor(props) {
 
       return this.createCategorizedFeed(this.archive);
     } else {
-      return null
+      return [];
     }
   }
+
+  manageCategoryToggles = () => {
+    // Default category settings
+    let categories = [
+      { name: "Europe", isToggled: false, enabled: true },
+      { name: "Arts", isToggled: false, enabled: true },
+      { name: "Health", isToggled: false, enabled: true },
+      { name: "Technology", isToggled: false, enabled: true },
+      { name: "Sports", isToggled: false, enabled: true },
+    ];
+    // If categories exist in localStorage, copy settings from there. Else, use default category settings.
+    if (localStorage.getItem("archiveCategories")) {
+      categories = JSON.parse(localStorage.getItem("archiveCategories"));
+    }
+
+    // Set category
+    localStorage.setItem("archiveCategories", JSON.stringify(categories));
+    return categories;
+  };
 
   createCategorizedFeed = (archive) => {
     // intialize feed as empty array
@@ -43,13 +62,16 @@ constructor(props) {
     }
 
     // convert this to the feed style archivelist uses
+    const categoryOrder = this.manageCategoryToggles();
+    console.log(categoryOrder);
     const feed = [];
     for (const category in sortedArticles) {
-      feed.push({
+      const index = categoryOrder.findIndex( cat => cat.name === category)
+      feed[index] = {
         category: category,
         articles: sortedArticles[category],
-        isToggled: true
-      })
+        isToggled: categoryOrder[index].isToggled
+      };
     }
 
     return feed;
@@ -88,17 +110,23 @@ constructor(props) {
       <div>
         <Header leftIcon="chevron-left" leftRoute="/" rightIcon="settings" rightRoute="/settings" title="Archive"/>
         <Search/>
+        <CSSTransitionGroup
+        transitionName="article"
+        transitionEnterTimeout={500}
+        transitionLeaveTimeout={500}
+        >
         {this.state.feed.length > 0 ? (
           <ArticleList
             feed={this.state.feed}
+            categoryStorage={"archiveCategories"}
             swipeAction={{
               name: "Delete",
               action: this.deleteArticleFromArchive,
             }}
           />
         ) :
-        <p>No articles saved yet. Try saving something!</p>}
-
+        <p className="fillerMessage">No articles saved yet. Try saving something!</p>}
+</CSSTransitionGroup>
 
         <CSSTransitionGroup
         transitionName="notification"

@@ -50,13 +50,13 @@ export default class Category extends Component {
     }
   };
 
-  manageToggleInLocalStorage = (toggleStatus) => {
-    const categories = JSON.parse(localStorage.getItem("newsboxCategories"));
+  manageToggleInLocalStorage = (toggleStatus, categoryStorage) => {
+    const categories = JSON.parse(localStorage.getItem(categoryStorage));
     const index = categories.findIndex(
       (category) => category.name === this.props.category
     );
     categories[index].isToggled = toggleStatus;
-    localStorage.setItem("newsboxCategories", JSON.stringify(categories));
+    localStorage.setItem(categoryStorage, JSON.stringify(categories));
   };
 
   setCssHeight = (container, isOpen, transitionTime) => {
@@ -73,7 +73,7 @@ export default class Category extends Component {
     e.preventDefault();
 
     // Note new toggle status in localStorage
-    this.manageToggleInLocalStorage(!this.dropdownController.current.open);
+    this.manageToggleInLocalStorage(!this.dropdownController.current.open, this.props.categoryStorage);
 
     this.triggerDropdown(
       this.dropdownController.current,
@@ -116,8 +116,8 @@ export default class Category extends Component {
         <ul className="category__content-container" ref={this.dropdownContent}>
         <CSSTransitionGroup
         transitionName="article"
-        transitionEnterTimeout={200}
-        transitionLeaveTimeout={200}
+        transitionEnterTimeout={500}
+        transitionLeaveTimeout={500}
         >
           {this.props.articles.map((article) => (
             <li
