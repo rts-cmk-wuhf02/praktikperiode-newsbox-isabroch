@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Header from "../Components/Header";
 import Search from "../Components/Search";
 import ArticleList from "../Components/ArticleList";
+import Notification from "../Components/Notification";
+import { CSSTransitionGroup } from "react-transition-group";
 import { getRssFeed } from "../Functionality/fetchRSS";
 
 export default class Newsbox extends Component {
@@ -11,9 +13,8 @@ export default class Newsbox extends Component {
       isLoading: true, // show loading animation if isLoading true
       feed: [],
       categories: this.manageCategoryToggles(),
+      notificationShowing: false,
     };
-
-
   }
 
   onPageLoad = async () => {
@@ -55,14 +56,66 @@ export default class Newsbox extends Component {
       { name: "Sports", isToggled: false, enabled: true },
     ];
     // If categories exist in localStorage, copy settings from there. Else, use default category settings.
-    if (localStorage.getItem('categories')) {
-      categories = JSON.parse(localStorage.getItem('categories'));
+    if (localStorage.getItem("newsboxCategories")) {
+      categories = JSON.parse(localStorage.getItem("newsboxCategories"));
     }
 
-    // Set category state
-    localStorage.setItem('categories', JSON.stringify(categories))
-    return categories
+    // Set category this.state.
+    localStorage.setItem("newsboxCategories", JSON.stringify(categories));
+    return categories;
   };
+
+  saveArticleToArchive = ({
+    articleUrl,
+    name,
+    description,
+    imageUrl,
+    imageAlt,
+    category,
+    pubDate,
+  }) => {
+    const archiveArticle = {
+      [articleUrl]: {
+        title: {content: name},
+        description: {content: description},
+        "media:content": {url: imageUrl},
+        "media:description": {content: imageAlt},
+        category: category,
+        pubDate: pubDate,
+      },
+    };
+
+    // Default archive is empty
+    let archive = {};
+
+    // Check for existing archive data
+    if (localStorage.getItem("archiveArticles")) {
+      archive = JSON.parse(localStorage.getItem("archiveArticles"));
+    }
+
+    // Merge archive and new archiveArticle with spread operators
+    archive = { ...archive, ...archiveArticle };
+
+    // Set localStorage item
+    localStorage.setItem("archiveArticles", JSON.stringify(archive));
+
+    // Create a notification for successful archive;
+    this.createNotification(name);
+
+    // Returns archive
+    return archive;
+  };
+
+  createNotification = (name) => {
+    // If notification remover timer already exists, cancel it.
+    clearTimeout(this.notificationTimer)
+
+    // Triggers notification, then removes after 2s
+    this.setState({ notificationShowing: name });
+    this.notificationTimer = setTimeout(() => {
+      this.setState({ notificationShowing: false });
+    }, 2000);
+  }
 
   async componentDidMount() {
     this.setState({ feed: await this.onPageLoad() });
@@ -82,8 +135,26 @@ export default class Newsbox extends Component {
         {this.state.isLoading ? (
           "Getting articles!"
         ) : (
-          <ArticleList feed={this.state.feed} />
+          <ArticleList
+            feed={this.state.feed}
+            swipeAction={{
+              name: "Archive",
+              action: this.saveArticleToArchive,
+            }}
+          />
         )}
+
+        <CSSTransitionGroup
+        transitionName="notification"
+        transitionEnterTimeout={200}
+        transitionLeaveTimeout={200}
+        >
+          {this.state.notificationShowing && (
+            <Notification>
+              Added <strong>{this.state.notificationShowing}</strong> to Archive!
+            </Notification>
+          )}
+        </CSSTransitionGroup>
       </div>
     );
   }

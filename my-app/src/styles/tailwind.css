@@ -44,8 +44,8 @@ body {
 
 .category__content-container {
   overflow: hidden;
-  height: var(--childHeight, 0);
-  transition: height var(--transitionTime, 400ms) ease;
+  max-height: var(--childHeight, 0);
+  transition: max-height var(--transitionTime, 400ms) ease;
 }
 
 .truncate-2line {
@@ -71,4 +71,34 @@ body {
 
 .is-not-swiping {
   transition: left 0.5s;
+}
+
+.notification {
+  --notificationSpacing: 1em;
+  margin: calc(var(--notificationSpacing) * 0.75) var(--notificationSpacing);
+  width: calc(100% - var(--notificationSpacing)*2);
+}
+
+.notification-enter {
+  opacity: 0.01;
+}
+.notification-enter.notification-enter-active {
+  opacity: 1;
+  transition: opacity 200ms ease-in;
+}
+.notification-leave {
+  opacity: 1;
+}
+.notification-leave.notification-leave-active {
+  opacity: 0.01;
+  transition: opacity 200ms ease-in;
+}
+
+.article-leave {
+  /* overflow: hidden; */
+  max-height: var(--childHeight);
+}
+.article-leave.article-leave-active {
+  max-height: 0;
+  transition: max-height 1000ms ease-in;
 }

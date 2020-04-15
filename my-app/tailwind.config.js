@@ -9,7 +9,8 @@ module.exports = {
         primary: "var(--color-primary)",
         bg: {
           primary: "var(--color-bg-primary)",
-          secondary: "var(--color-bg-secondary)"
+          secondary: "var(--color-bg-secondary)",
+          notification: "var(--color-notification)"
         },
         text: {
           primary: "var(--color-text-primary)",

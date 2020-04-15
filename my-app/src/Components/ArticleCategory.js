@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import ArticleSummary from "../Components/ArticleSummary";
 import categoryItem from "../media/icn_surfing.svg";
+import { CSSTransitionGroup } from "react-transition-group";
+
 
 export default class Category extends Component {
   constructor(props) {
@@ -10,7 +12,7 @@ export default class Category extends Component {
   }
 
   /* Loops through a container's direct children and adds their heights together. */
-  getInnerHeight = container => {
+  getInnerHeight = (container) => {
     const children = container.childNodes;
 
     let totalHeight = 0;
@@ -46,34 +48,32 @@ export default class Category extends Component {
       dropdownController.classList.add("category--is-open");
       this.animateHeight(dropdownContentContainer, true, transitionTime);
     }
-
-    // Note new toggle status in localStorage
-    this.manageToggleInLocalStorage(dropdownController.open)
   };
 
   manageToggleInLocalStorage = (toggleStatus) => {
-    const categories = JSON.parse(localStorage.getItem('categories'));
-    const index = categories.findIndex( category => category.name === this.props.category);
+    const categories = JSON.parse(localStorage.getItem("newsboxCategories"));
+    const index = categories.findIndex(
+      (category) => category.name === this.props.category
+    );
     categories[index].isToggled = toggleStatus;
-    localStorage.setItem('categories', JSON.stringify(categories));
+    localStorage.setItem("newsboxCategories", JSON.stringify(categories));
+  };
+
+  setCssHeight = (container, isOpen, transitionTime) => {
+    const height = isOpen ? this.getInnerHeight(container) : 0;
+    container.style = `--childHeight: ${height}px; --transitionTime: ${transitionTime}ms`;
   }
 
   /* Sets CSS variables, which will trigger transitions */
   animateHeight = (container, isOpen, transitionTime) => {
-    const height = isOpen ? this.getInnerHeight(container) : 0;
-    container.style = `--childHeight: ${height}px; --transitionTime: ${transitionTime}ms`;
-  };
+    this.setCssHeight(container, isOpen, transitionTime);
+  }
 
   handleClick(e) {
     e.preventDefault();
-    e.persist();
-    const isTriggeringDropdown = e.target.classList.contains(
-      "category__dropdown"
-    );
 
-    if (!isTriggeringDropdown) {
-      return;
-    }
+    // Note new toggle status in localStorage
+    this.manageToggleInLocalStorage(!this.dropdownController.current.open);
 
     this.triggerDropdown(
       this.dropdownController.current,
@@ -83,7 +83,7 @@ export default class Category extends Component {
 
   componentDidMount() {
     // Match toggle status of last time app was used
-    if(this.props.isToggled) {
+    if (this.props.isToggled) {
       this.triggerDropdown(
         this.dropdownController.current,
         this.dropdownContent.current,
@@ -98,8 +98,8 @@ export default class Category extends Component {
         <summary
           className="category__dropdown flex items-center px-4 py-3 text-text-primary bordered-item-t"
           touch-action="none"
-          onClick={e => e.preventDefault()}
-          onPointerDown={e => this.handleClick(e)}
+          onClick={(e) => e.preventDefault()}
+          onPointerDown={(e) => this.handleClick(e)}
         >
           <img
             src={categoryItem}
@@ -109,14 +109,25 @@ export default class Category extends Component {
             className="inline p-2 shadow-xl rounded-full"
           />
 
-          <h2 className="inline pl-2 font-bold uppercase">{this.props.category}</h2>
+          <h2 className="inline pl-2 font-bold uppercase">
+            {this.props.category}
+          </h2>
         </summary>
         <ul className="category__content-container" ref={this.dropdownContent}>
-          {this.props.articles.map(article => (
-            <li className="category__content bordered-item-t" key={article.link.content}>
-              <ArticleSummary article={article} />
+        <CSSTransitionGroup
+        transitionName="article"
+        transitionEnterTimeout={200}
+        transitionLeaveTimeout={200}
+        >
+          {this.props.articles.map((article) => (
+            <li
+              className="category__content bordered-item-t"
+              key={article.link.content}
+            >
+              <ArticleSummary article={article} category={this.props.category} swipeAction={this.props.swipeAction} />
             </li>
           ))}
+          </CSSTransitionGroup>
         </ul>
       </details>
     );
