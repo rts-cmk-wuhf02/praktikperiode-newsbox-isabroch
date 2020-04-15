@@ -12,7 +12,6 @@ export default class Newsbox extends Component {
     this.state = {
       isLoading: true, // show loading animation if isLoading true
       feed: [],
-      categories: this.manageCategoryToggles(),
       notificationShowing: false,
     };
   }
@@ -21,7 +20,7 @@ export default class Newsbox extends Component {
     /* Initialize object to hold feeds */
     const feeds = [];
 
-    for (const category of this.state.categories) {
+    for (const category of this.props.categories) {
       // If category has been enabled via settings, fetch articles
       if (category.enabled) {
         const url =
@@ -44,25 +43,6 @@ export default class Newsbox extends Component {
     this.setState({ isLoading: false });
 
     return feeds;
-  };
-
-  manageCategoryToggles = () => {
-    // Default category settings
-    let categories = [
-      { name: "Europe", isToggled: false, enabled: true },
-      { name: "Arts", isToggled: false, enabled: true },
-      { name: "Health", isToggled: false, enabled: true },
-      { name: "Technology", isToggled: false, enabled: true },
-      { name: "Sports", isToggled: false, enabled: true },
-    ];
-    // If categories exist in localStorage, copy settings from there. Else, use default category settings.
-    if (localStorage.getItem("newsboxCategories")) {
-      categories = JSON.parse(localStorage.getItem("newsboxCategories"));
-    }
-
-    // Set category this.state.
-    localStorage.setItem("newsboxCategories", JSON.stringify(categories));
-    return categories;
   };
 
   saveArticleToArchive = ({

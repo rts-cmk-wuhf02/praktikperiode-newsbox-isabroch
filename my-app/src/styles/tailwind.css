@@ -13,7 +13,7 @@ body {
   @apply border-bg-secondary;
 }
 
-.bordered-item-t {
+.bordered-item-t, .bordered-item-between + .bordered-item-between {
   @apply border-solid;
   @apply border-t-2;
   @apply border-bg-secondary;
@@ -76,7 +76,7 @@ body {
 .notification {
   --notificationSpacing: 1em;
   margin: calc(var(--notificationSpacing) * 0.75) var(--notificationSpacing);
-  width: calc(100% - var(--notificationSpacing)*2);
+  width: calc(100% - var(--notificationSpacing) * 2);
 }
 
 .notification-enter {
@@ -104,5 +104,65 @@ body {
 }
 
 .fillerMessage {
-  @apply pl-10
+  @apply pl-10;
+}
+
+.toggle {
+  --toggleSize: 1em;
+  --toggleSpace: calc(var(--toggleSize) * 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.toggle__slider {
+  position: relative;
+  @apply rounded-full;
+  width: calc((var(--toggleSpace) + var(--toggleSize)) * 2);
+  height: calc(var(--toggleSpace) * 2 + var(--toggleSize));
+  color: transparent;
+  box-shadow: 0 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+.toggle__slider:before,
+.toggle__slider:after {
+  display: block;
+  content: "";
+  position: absolute;
+}
+.toggle__slider:before {
+  background: var(--color-toggle-bg);
+  @apply rounded-full;
+  box-shadow: inset 0 0 1px rgba(0,0,0,0.1);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: background 0.2s ease;
+}
+.toggle__slider:after {
+  @apply bg-text-button;
+  @apply rounded-full;
+  margin: var(--toggleSpace) 0;
+  top: 0;
+  box-shadow: 0 5px 10px 1px rgba(0, 0, 0, 0.3);
+  left: var(--toggleSpace);
+  width: var(--toggleSize);
+  height: var(--toggleSize);
+  transform: translateX(0);
+  transition: transform 0.2s cubic-bezier(.08,1.39,.87,1.05);
+}
+
+.toggle__checkbox:checked ~ .toggle__slider:before {
+  @apply bg-primary;
+}
+.toggle__checkbox:checked ~ .toggle__slider:after {
+  transform: translateX(100%);
+}
+
+.toggle__checkbox {
+  display: none;
+}
+
+.toggle__title {
 }
