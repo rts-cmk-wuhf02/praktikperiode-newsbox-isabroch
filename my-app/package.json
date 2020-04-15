@@ -22,7 +22,7 @@
     "build:css": "postcss src/styles/tailwind.css -o src/styles/index.css",
     "watch:css": "postcss src/styles/tailwind.css -o src/styles/index.css --watch",
     "build:js": "react-scripts build",
-    "watch:js": "sleep 5 && react-scripts start",
+    "watch:js": "sleep 1 && react-scripts start",
     "start": "run-p watch:css watch:js",
     "build": "npm i && npm run build:css && npm run build:js",
     "test": "react-scripts test",
