@@ -103,7 +103,7 @@ export default class Newsbox extends Component {
 
   render() {
     return (
-      <div className="page">
+      <div className="page bg-bg-primary">
         <Header
           leftIcon="bookmark-1"
           leftRoute="/archive"

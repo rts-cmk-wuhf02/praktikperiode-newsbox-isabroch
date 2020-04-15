@@ -13,7 +13,6 @@ body {
 
 .page {
   @apply h-full;
-  @apply bg-bg-primary;
   display: grid;
   grid-template-rows: auto 1fr;
 }
