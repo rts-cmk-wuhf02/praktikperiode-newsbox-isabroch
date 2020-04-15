@@ -63,7 +63,6 @@ constructor(props) {
 
     // convert this to the feed style archivelist uses
     const categoryOrder = this.manageCategoryToggles();
-    console.log(categoryOrder);
     const feed = [];
     for (const category in sortedArticles) {
       const index = categoryOrder.findIndex( cat => cat.name === category)
