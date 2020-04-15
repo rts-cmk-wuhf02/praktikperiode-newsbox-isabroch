@@ -3,16 +3,12 @@
 @import "tailwindcss/utilities";
 @import "./variables.css";
 
-html, body, #root, .app {
-  height: 100%;
-}
-
 body {
   overflow-y: scroll;
 }
 
 .page {
-  @apply h-full;
+  min-height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr;
 }
