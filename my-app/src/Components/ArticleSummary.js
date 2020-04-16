@@ -77,7 +77,6 @@ export default class ArticleSummary extends Component {
   };
 
   handleStartPan = (e) => {
-    // e.preventDefault();
     e.persist();
 
     this.x1 = e.clientX;
@@ -89,7 +88,6 @@ export default class ArticleSummary extends Component {
 
   handlePan = (e) => {
     e.persist();
-    e.preventDefault();
 
     this.x2 = e.clientX;
     this.y2 = e.clientY;
@@ -98,21 +96,24 @@ export default class ArticleSummary extends Component {
     this.xDelta = this.x2 - this.x1;
     this.yDelta = this.y2 - this.y1;
 
-    console.log(this.y1, this.y2);
+    console.log(this.xDelta, this.yDelta);
 
-
-    if (this.state.isSwiping && Math.abs(this.xDelta) >= Math.abs(this.yDelta)) {
+    if (this.state.isSwiping) {
+      if(Math.abs(this.xDelta) >= Math.abs(this.yDelta)) {
         let swipePosition = this.xDelta > 0 ? 0 : this.xDelta;
         this.setState({ currentX: swipePosition });
-
-      } else {
-        window.scrollBy(0, this.yDelta)
+        e.preventDefault();
       }
+    }
   };
 
   handleEndPan = (e) => {
-    e.preventDefault();
     e.persist();
+
+    // Trying to fix for scrolls?
+    if (Math.abs(this.yDelta) > Math.abs(this.xDelta) && this.state.isSwiping) {
+      return;
+    }
 
     if (Math.abs(this.xDelta) > 5 && this.state.isSwiping) {
       /* If drag ends at less than 25% of notification width, swipe all the way to left. Else, reset to 0. */
@@ -140,6 +141,8 @@ export default class ArticleSummary extends Component {
 
         this.props.swipeAction.action(article);
 
+        e.preventDefault();
+
         if (this.props.swipeAction.name.toLowerCase() === 'archive') {
           setTimeout(() => {
             this.setState({ currentX: 0 });
@@ -156,7 +159,7 @@ export default class ArticleSummary extends Component {
     return (
       <article
         className={`relative select-none`}
-        touch-action="none"
+        touch-action="pan-y"
         onPointerMove={this.handlePan}
         onPointerUp={this.handleEndPan}
         onPointerLeave={this.handleEndPan}
