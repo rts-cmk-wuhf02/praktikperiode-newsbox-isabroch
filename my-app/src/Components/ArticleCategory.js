@@ -96,8 +96,7 @@ export default class Category extends Component {
         <summary
           className="category__dropdown flex items-center px-4 py-3 text-text-primary bordered-item-t"
           touch-action="none"
-          onClick={(e) => e.preventDefault()}
-          onPointerDown={(e) => this.handleClick(e)}
+          onClick={(e) => this.handleClick(e)}
         >
           <img
             src={categoryItem}
