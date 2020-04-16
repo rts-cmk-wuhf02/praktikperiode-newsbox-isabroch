@@ -52,12 +52,14 @@ class ArticleImage extends Component {
 export default class ArticleSummary extends Component {
   constructor(props) {
     super(props);
-    this.el = React.createRef();
+    this.article = React.createRef();
     this.state = {
-      totalMoved: 0,
       currentX: 0,
+      currentY: 0,
       isSwiping: false,
     };
+    this.x1 = 0;
+    this.y1 = 0;
   }
 
   getImage = (article) => {
@@ -72,42 +74,55 @@ export default class ArticleSummary extends Component {
     }
 
     return { image: image, alt: alt };
-  }
+  };
 
   handleStartPan = (e) => {
-    e.preventDefault();
-    // Detect if click/tap or hold (longer than 0.05ms)
-    this.clickTimer = setTimeout(() => {
-      this.setState({ isSwiping: true, totalMoved: 0, currentX: 0 });
-    }, 50);
+    // e.preventDefault();
+    e.persist();
+
+    this.x1 = e.clientX;
+    this.y1 = e.clientY;
+
+    // register click and drag instead of hover pans.
+    this.setState({ isSwiping: true, currentX: 0 });
   };
 
   handlePan = (e) => {
     e.persist();
+    e.preventDefault();
 
-    if (this.state.isSwiping) {
-      let scrollPosition = this.state.currentX + e.movementX;
-      if (scrollPosition > 0) {
-        scrollPosition = 0;
+    this.x2 = e.clientX;
+    this.y2 = e.clientY;
+
+    // Calculate xDelta and yDelta (diff between x1->x2, y1->y2)
+    this.xDelta = this.x2 - this.x1;
+    this.yDelta = this.y2 - this.y1;
+
+    console.log(this.y1, this.y2);
+
+
+    if (this.state.isSwiping && Math.abs(this.xDelta) >= Math.abs(this.yDelta)) {
+        let swipePosition = this.xDelta > 0 ? 0 : this.xDelta;
+        this.setState({ currentX: swipePosition });
+
+      } else {
+        window.scrollBy(0, this.yDelta)
       }
-      this.setState({ currentX: scrollPosition });
-      // Calculate x movement of mouse to account for clicking and holding, but not dragging.
-      this.setState({
-        totalMoved: this.state.totalMoved + Math.abs(e.movementX),
-      });
-      e.preventDefault();
-    }
   };
 
   handleEndPan = (e) => {
-    clearTimeout(this.clickTimer);
+    e.preventDefault();
     e.persist();
 
-    if (this.state.isSwiping && this.state.totalMoved > 5) {
+    if (Math.abs(this.xDelta) > 5 && this.state.isSwiping) {
       /* If drag ends at less than 25% of notification width, swipe all the way to left. Else, reset to 0. */
-      const elWidth = this.el.current.offsetWidth;
-      const threshold = Math.round(elWidth * 0.25) * -1;
-      let endPosition = this.state.currentX < threshold ? `-100%` : 0;
+      const elWidth = this.article.current.offsetWidth;
+      let minThreshold = 100;
+      let responsiveThreshold = Math.round(elWidth * 0.25);
+      const threshold = Math.min(minThreshold, responsiveThreshold);
+      let endPosition =
+        Math.abs(this.state.currentX) >= Math.abs(threshold) ? `-100%` : 0;
+
       this.setState({ currentX: endPosition, isSwiping: false });
 
       /* On successful swipe, add to archive and then reset position */
@@ -119,28 +134,29 @@ export default class ArticleSummary extends Component {
           imageUrl: this.getImage(this.props.article).image,
           imageAlt: this.getImage(this.props.article).alt,
           category: this.props.category,
-          pubDate: new Date(this.props.article.pubDate.content).getTime()
+          pubDate: new Date(this.props.article.pubDate.content).getTime(),
           /* Returns pubDate as number of ms, see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime */
         };
 
         this.props.swipeAction.action(article);
 
-        if (this.props.swipeAction.name.toLowerCase() === 'archive') {
-          setTimeout(() => {
-            this.setState({ currentX: 0 });
-          }, 1500);
-        }
+        // if (this.props.swipeAction.name.toLowerCase() === 'archive') {
+        //   setTimeout(() => {
+        //     this.setState({ currentX: 0 });
+        //   }, 1500);
+        // }
       }
     } else if (e.type === "pointerup") {
-      /* If type is pointerUp, tap is less than 0.05s in duration OR user did not move more than 5px while holding, register as click and travel to link */
-      window.location = e.target.href;
+      /* If type is pointerUp OR user did not move more than 5px while holding, register as click and travel to link */
+      // window.location = e.target.href;
     }
   };
 
   render() {
     return (
       <article
-        className="relative select-none"
+        className={`relative select-none`}
+        touch-action="none"
         onPointerMove={this.handlePan}
         onPointerUp={this.handleEndPan}
         onPointerLeave={this.handleEndPan}
@@ -148,7 +164,7 @@ export default class ArticleSummary extends Component {
         onClick={(e) => {
           e.preventDefault();
         }} /* Prevent mouse clicks when dragging */
-        ref={this.el}
+        ref={this.article}
       >
         <div
           className={`grid grid-cols-auto-1 px-4 py-4 relative z-10 bg-bg-primary w-full ${
@@ -169,7 +185,10 @@ export default class ArticleSummary extends Component {
               {this.props.article.description.content}
             </p>
           </div>
-          <ArticleImage url={this.getImage(this.props.article).image} alt={this.getImage(this.props.article).alt} />
+          <ArticleImage
+            url={this.getImage(this.props.article).image}
+            alt={this.getImage(this.props.article).alt}
+          />
         </div>
         <ActionButton action={this.props.swipeAction.name} />
       </article>
