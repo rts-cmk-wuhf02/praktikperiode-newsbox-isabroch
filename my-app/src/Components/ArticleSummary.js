@@ -90,16 +90,14 @@ export default class ArticleSummary extends Component {
   handlePan = (e) => {
     e.persist();
 
-    this.x2 = e.clientX;
-    this.y2 = e.clientY;
-
-    // Calculate xDelta and yDelta (diff between x1->x2, y1->y2)
-    this.xDelta = this.x2 - this.x1;
-    this.yDelta = this.y2 - this.y1;
-
-    console.log(this.xDelta, this.yDelta);
-
     if (this.state.isSwiping) {
+      this.x2 = e.clientX;
+      this.y2 = e.clientY;
+
+      // Calculate xDelta and yDelta (diff between x1->x2, y1->y2)
+      this.xDelta = this.x2 - this.x1;
+      this.yDelta = this.y2 - this.y1;
+
       if(Math.abs(this.xDelta) >= Math.abs(this.yDelta)) {
         let swipePosition = this.xDelta > 0 ? 0 : this.xDelta;
         this.setState({ currentX: swipePosition });
@@ -111,10 +109,7 @@ export default class ArticleSummary extends Component {
   handleEndPan = (e) => {
     e.persist();
 
-    // Trying to fix for scrolls?
-    if (Math.abs(this.yDelta) > Math.abs(this.xDelta) && this.state.isSwiping) {
-      return;
-    }
+    console.log(this.state.isSwiping);
 
     if (Math.abs(this.xDelta) > 5 && this.state.isSwiping) {
       /* If drag ends at less than 25% of notification width, swipe all the way to left. Else, reset to 0. */
@@ -149,7 +144,12 @@ export default class ArticleSummary extends Component {
             this.setState({ currentX: 0 });
           }, 1500);
         }
+
+        this.xDelta = 0;
       }
+    } else if (e.type === "pointerup") {
+      /* If type is pointerUp OR user did not move more than 5px while holding, register as click and travel to link */
+      window.location = e.target.href;
     }
   };
 
@@ -177,8 +177,8 @@ export default class ArticleSummary extends Component {
             <h3 className="text-text-primary font-bold truncate">
               <a ref={this.articleLink}
                 className="article__link"
-                onClick={e => {window.location = e.target.href}} // go to link on click, required due to preventDefault on pans
-                onDragStart={e => e.preventDefault()} // prevent dragging the link on web
+                onClick={e => {e.preventDefault()}}
+                onDragStart={e => e.preventDefault()}
                 href={this.props.article.link.content}
               >
                 {this.props.article.title.content}
