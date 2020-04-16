@@ -63,7 +63,7 @@ body {
 
 .article__link::before {
   /* Uncomment to enable link over entire card, comment for only over text */
-  /* content: ""; */
+  content: "";
   position: absolute;
   top: 0;
   left: 0;

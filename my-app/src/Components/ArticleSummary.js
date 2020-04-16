@@ -60,6 +60,7 @@ export default class ArticleSummary extends Component {
     };
     this.x1 = 0;
     this.y1 = 0;
+    this.articleLink = React.createRef();
   }
 
   getImage = (article) => {
@@ -149,9 +150,6 @@ export default class ArticleSummary extends Component {
           }, 1500);
         }
       }
-    } else if (e.type === "pointerup") {
-      /* If type is pointerUp OR user did not move more than 5px while holding, register as click and travel to link */
-      // window.location = e.target.href;
     }
   };
 
@@ -170,15 +168,17 @@ export default class ArticleSummary extends Component {
         ref={this.article}
       >
         <div
-          className={`grid grid-cols-auto-1 px-4 py-4 relative z-10 bg-bg-primary w-full ${
+          className={`grid grid-cols-auto-1 px-4 py-4 relative z-10 bg-bg-primary w-full article-content ${
             this.state.isSwiping ? "is-swiping" : "is-not-swiping"
           }`}
           style={{ left: this.state.currentX }}
         >
           <div className="pl-5 pr-10 overflow-hidden">
             <h3 className="text-text-primary font-bold truncate">
-              <a
+              <a ref={this.articleLink}
                 className="article__link"
+                onClick={e => {window.location = e.target.href}} // go to link on click, required due to preventDefault on pans
+                onDragStart={e => e.preventDefault()} // prevent dragging the link on web
                 href={this.props.article.link.content}
               >
                 {this.props.article.title.content}
