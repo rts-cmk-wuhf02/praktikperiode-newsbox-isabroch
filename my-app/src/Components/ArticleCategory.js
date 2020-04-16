@@ -13,7 +13,8 @@ export default class Category extends Component {
 
   /* Loops through a container's direct children and adds their heights together. */
   getInnerHeight = (container) => {
-    const children = container.childNodes;
+    const children = container.childNodes[0].children;
+    // console.log(children[0].children);
 
     let totalHeight = 0;
 
@@ -59,14 +60,11 @@ export default class Category extends Component {
     localStorage.setItem(categoryStorage, JSON.stringify(categories));
   };
 
-  setCssHeight = (container, isOpen, transitionTime) => {
-    const height = isOpen ? this.getInnerHeight(container) : 0;
-    container.style = `--childHeight: ${height}px; --transitionTime: ${transitionTime}ms`;
-  }
-
   /* Sets CSS variables, which will trigger transitions */
   animateHeight = (container, isOpen, transitionTime) => {
-    this.setCssHeight(container, isOpen, transitionTime);
+    const height = isOpen ? this.getInnerHeight(container) : 0;
+    console.log(container);
+    container.style = `--childHeight: ${height}px; --transitionTime: ${transitionTime}ms`;
   }
 
   handleClick(e) {
