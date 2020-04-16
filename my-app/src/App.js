@@ -21,8 +21,6 @@ function getDefaultColorMode() {
   // create colorMode item!
   localStorage.setItem("colorMode", colorMode)
 
-  console.log(colorMode);
-
   return colorMode;
 }
 
@@ -69,7 +67,6 @@ export default class App extends Component {
 
   changeColorMode = () => {
     const newColorMode = !this.state.isLightMode ? "light" : "dark";
-    console.log(newColorMode);
     localStorage.setItem("colorMode", newColorMode)
     this.setState({isLightMode: !this.state.isLightMode});
   }

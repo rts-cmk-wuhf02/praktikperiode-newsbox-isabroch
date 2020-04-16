@@ -109,7 +109,6 @@ export default class ArticleSummary extends Component {
   handleEndPan = (e) => {
     e.persist();
 
-    console.log(this.state.isSwiping);
 
     if (Math.abs(this.xDelta) > 5 && this.state.isSwiping) {
       /* If drag ends at less than 25% of notification width, swipe all the way to left. Else, reset to 0. */
