@@ -19,7 +19,7 @@
   --color-text-secondary: rgb(139, 152, 161);
   --color-text-button: #FFFFFF;
   --color-action-delete: #D95454;
-  --color-notification: rgba(45, 47, 50, 0.95);
+  --color-notification: rgba(221, 221, 221, 0.95);
   --color-toggle-bg: rgba(212, 212, 212, 0.75);
   --color-shadow: rgba(0,0,0,0.9);
 }

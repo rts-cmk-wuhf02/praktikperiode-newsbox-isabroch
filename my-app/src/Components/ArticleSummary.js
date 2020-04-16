@@ -140,11 +140,11 @@ export default class ArticleSummary extends Component {
 
         this.props.swipeAction.action(article);
 
-        // if (this.props.swipeAction.name.toLowerCase() === 'archive') {
-        //   setTimeout(() => {
-        //     this.setState({ currentX: 0 });
-        //   }, 1500);
-        // }
+        if (this.props.swipeAction.name.toLowerCase() === 'archive') {
+          setTimeout(() => {
+            this.setState({ currentX: 0 });
+          }, 1500);
+        }
       }
     } else if (e.type === "pointerup") {
       /* If type is pointerUp OR user did not move more than 5px while holding, register as click and travel to link */
