@@ -80,8 +80,8 @@ body {
 }
 
 .notification {
-  --notificationSpacing: 1em;
-  margin: calc(var(--notificationSpacing) * 0.75) var(--notificationSpacing);
+  --notificationSpacing: 2em;
+  margin: var(--notificationSpacing);
   width: calc(100% - var(--notificationSpacing) * 2);
 }
 
@@ -110,8 +110,9 @@ body {
 }
 
 .fillerMessage {
-  @apply pl-10;
+  @apply px-10;
   @apply text-text-secondary;
+  display: block;
 }
 
 .toggle {
@@ -121,6 +122,11 @@ body {
   align-items: center;
   justify-content: space-between;
   position: relative;
+}
+
+.toggleList {
+  margin-top: 2vh;
+  margin-bottom: 5vh;
 }
 
 .toggle__slider {

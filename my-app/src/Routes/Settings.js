@@ -27,7 +27,6 @@ class ToggleList extends Component {
 
 export default class Settings extends Component {
     render() {
-
     return (
       <div className="bg-bg-secondary page">
         <Header
@@ -44,10 +43,10 @@ export default class Settings extends Component {
             <span className="text-text-secondary text-xl">Categories</span>
           </h2>
 
-          <ToggleList items={this.props.categories} handleToggle={this.props.handleToggle} componentClass="mt-16 mb-20" />
+          <ToggleList items={this.props.categories} handleToggle={this.props.handleToggle} componentClass="toggleList" />
 
           <button className="inline-block uppercase font-label text-text-primary border-solid border-bg-tertiary border px-4 py-3 tracking-wider rounded-full focus:outline-none focus:shadow-outline" onClick={this.props.handleColorMode}>Toggle dark mode</button>
-          <VersionNumber componentClass="block text-center text-text-secondary text-xs mt-auto mb-10"/>
+          <VersionNumber componentClass="block text-center text-text-secondary text-xs my-10"/>
         </div>
       </div>
     );
