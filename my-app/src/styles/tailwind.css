@@ -1,0 +1,203 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+@import "./variables.css";
+
+body {
+  overflow-y: scroll;
+}
+
+.page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.bordered-item-b {
+  @apply border-solid;
+  @apply border-b-2;
+  @apply border-bg-secondary;
+}
+
+.bordered-item-t, .bordered-item-between + .bordered-item-between {
+  @apply border-solid;
+  @apply border-t-2;
+  @apply border-bg-secondary;
+}
+
+.category__dropdown {
+  position: relative;
+  list-style: none;
+  cursor: pointer;
+}
+
+.category__dropdown::-webkit-details-marker {
+  display: none;
+}
+
+.category__dropdown::after {
+  content: "\ebc6";
+  font-family: "honeybee";
+  position: absolute;
+  right: 1em;
+  transform: rotate(0);
+  transition: transform var(--transitionTime, 400ms) ease;
+}
+
+.category--is-open .category__dropdown::after {
+  transform: rotate(90deg);
+}
+
+.category__content-container {
+  overflow: hidden;
+  max-height: var(--childHeight, 0);
+  transition: max-height var(--transitionTime, 400ms) ease;
+}
+
+.truncate-2line {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.article__link::before {
+  /* Uncomment to enable link over entire card, comment for only over text */
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.is-swiping {
+  transition: left 0s;
+}
+
+.is-not-swiping {
+  transition: left 0.5s;
+}
+
+.notification {
+  --notificationSpacing: 2em;
+  margin: var(--notificationSpacing);
+  width: calc(100% - var(--notificationSpacing) * 2);
+}
+
+.notification-enter {
+  opacity: 0.01;
+}
+.notification-enter.notification-enter-active {
+  opacity: 1;
+  transition: opacity 200ms ease-in;
+}
+.notification-leave {
+  opacity: 1;
+}
+.notification-leave.notification-leave-active {
+  opacity: 0.01;
+  transition: opacity 200ms ease-in;
+}
+
+.article-leave {
+  overflow: hidden;
+  max-height: var(--childHeight);
+}
+.article-leave.article-leave-active {
+  max-height: 0;
+  transition: max-height 500ms ease-in;
+}
+
+.fillerMessage {
+  @apply px-10;
+  @apply text-text-secondary;
+  display: block;
+}
+
+.toggle {
+  --toggleSize: 1em;
+  --toggleSpace: calc(var(--toggleSize) * 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.toggleList {
+  margin-top: 2vh;
+  margin-bottom: 5vh;
+}
+
+.toggle__slider {
+  position: relative;
+  @apply rounded-full;
+  width: calc((var(--toggleSpace) + var(--toggleSize)) * 2);
+  height: calc(var(--toggleSpace) * 2 + var(--toggleSize));
+  color: transparent;
+  box-shadow: 0 0 1px 1px rgba(255, 255, 255, 0.1);
+  user-select: none;
+}
+
+.toggle__slider:before,
+.toggle__slider:after {
+  display: block;
+  content: "";
+  position: absolute;
+}
+.toggle__slider:before {
+  background: var(--color-toggle-bg);
+  @apply rounded-full;
+  box-shadow: inset 0 0 1px rgba(0,0,0,0.1);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: background 0.2s ease;
+}
+.toggle__slider:after {
+  @apply bg-text-button;
+  @apply rounded-full;
+  margin: var(--toggleSpace) 0;
+  top: 0;
+  box-shadow: 0 5px 10px 1px rgba(0, 0, 0, 0.3);
+  left: var(--toggleSpace);
+  width: var(--toggleSize);
+  height: var(--toggleSize);
+  transform: translateX(0);
+  transition: transform 0.2s cubic-bezier(.08,1.39,.87,1.05);
+}
+
+.toggle__checkbox:checked ~ .toggle__slider:before {
+  @apply bg-primary;
+}
+.toggle__checkbox:checked ~ .toggle__slider:after {
+  transform: translateX(100%);
+}
+
+.toggle__checkbox {
+  display: none;
+}
+
+
+.title-divider::after {
+content: '';
+display: block;
+@apply mx-auto;
+@apply mt-8;
+width: 50%;
+border-bottom: 1px solid var(--color-bg-primary);
+}
+
+.increaseTouchArea {
+  position: relative;
+  display: block;
+}
+
+.increaseTouchArea::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;bottom: 0;right: 0;left: 0;
+  transform: scale(2);
+}
